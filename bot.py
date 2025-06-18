@@ -1,7 +1,6 @@
 import os
 import logging
-from aiogram import Bot, types
-from aiogram import F
+from aiogram import Bot, types, F
 from aiogram import Dispatcher
 from aiohttp import web
 
@@ -29,15 +28,19 @@ async def send_welcome(message: types.Message):
 async def echo_message(message: types.Message):
     await message.answer(message.text)
 
-# Web server ishga tushishi uchun qo'shimcha route
+# Web serverishga tushish uchun alohida route yaratish
 async def hello(request):
     return web.Response(text="Bot online!")
 
-# Router qo'shish
-dp.router.add_get('/', hello)
+# Web application yaratish
+app = web.Application()
+app.router.add_get('/', hello)
+
+# Dispatcher ichidagi handlerlarni ro'yxatdan o'tkazish
+dp.setup(app)
 
 # Web serverni ishga tushirish
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 10000))
     logging.info(f"Bot ishga tushdi: {port} portda")
-    web.run_app(dp, port=port)
+    web.run_app(app, port=port)
