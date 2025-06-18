@@ -3,12 +3,20 @@ import logging
 from aiogram import Bot, Dispatcher, types
 from aiogram import F
 from aiohttp import web
+from dotenv import load_dotenv
+
+# .env faylini yuklash (agar siz foydalanayotgan bo'lsangiz)
+load_dotenv()
 
 # Loggingni sozlash
 logging.basicConfig(level=logging.INFO)
 
 # Bot tokenini muhit o'zgaruvchisidan olish
-API_TOKEN = os.getenv('7777111228:AAFJNsgzYXjfd1fNXIbffB8IhNBnwC5Nj6g')
+API_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
+
+# Tokenni tekshirish
+if API_TOKEN is None:
+    raise ValueError("TELEGRAM_BOT_TOKEN muhit o'zgaruvchisi topilmadi. Iltimos, to'g'ri tokenni belgilang.")
 
 # Bot va dispatcher yaratish
 bot = Bot(token=API_TOKEN)
