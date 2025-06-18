@@ -1,8 +1,8 @@
 import os
 import logging
-from aiogram import Bot, types, F
-from aiogram import Dispatcher
-from aiohttp import web
+from aiogram import Bot, Dispatcher, types
+from aiogram import F
+from aiogram.utils import executor
 
 # Loggingni sozlash
 logging.basicConfig(level=logging.INFO)
@@ -28,20 +28,7 @@ async def send_welcome(message: types.Message):
 async def echo_message(message: types.Message):
     await message.answer(message.text)
 
-# Web server ishga tushishi uchun qo'shimcha route
-async def hello(request):
-    return web.Response(text="Bot online!")
-
-# Web application uchun routni qo'shish
-app = web.Application()
-app.router.add_get('/', hello)
-
-# Botni ishga tushirish
-async def main():
-    await bot.delete_webhook()  # Oldin o'rnatilgan webhookni o'chirish
-    await dp.start_polling(bot)
-
-# Web serverni ishga tushirish
+# Botni polling orqali ishga tushirish
 if __name__ == '__main__':
     logging.info("Bot ishga tushmoqda...")
-    web.run_app(app, port=int(os.environ.get("PORT", 10000)))
+    executor.start_polling(dp, skip_updates=True)
