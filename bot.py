@@ -8,7 +8,7 @@ from aiohttp import web
 logging.basicConfig(level=logging.INFO)
 
 # Bot tokenini muhit o'zgaruvchisidan olish
-API_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
+API_TOKEN = os.getenv('7777111228:AAFJNsgzYXjfd1fNXIbffB8IhNBnwC5Nj6g')
 
 # Bot va dispatcher yaratish
 bot = Bot(token=API_TOKEN)
