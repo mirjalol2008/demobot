@@ -1,7 +1,8 @@
 import os
 import logging
-from aiogram import Bot, types, F
-from aiogram import Application
+from aiogram import Bot, types
+from aiogram import F
+from aiogram import Dispatcher
 from aiohttp import web
 
 # Loggingni sozlash
@@ -14,17 +15,17 @@ API_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
 if API_TOKEN is None:
     raise ValueError("TELEGRAM_BOT_TOKEN muhit o'zgaruvchisi topilmadi. Iltimos, to'g'ri tokenni belgilang.")
 
-# Bot va Application yaratish
+# Bot va Dispatcher yaratish
 bot = Bot(token=API_TOKEN)
-app = Application()
+dp = Dispatcher()
 
 # /start komandasi uchun handler
-@app.message(F.command("start"))
+@dp.message(F.command("start"))
 async def send_welcome(message: types.Message):
     await message.reply("Salom! Bu mening Telegram botim.")
 
 # Har qanday xabarni qaytarish uchun handler
-@app.message()
+@dp.message()
 async def echo_message(message: types.Message):
     await message.answer(message.text)
 
@@ -33,10 +34,10 @@ async def hello(request):
     return web.Response(text="Bot online!")
 
 # Router qo'shish
-app.router.add_get('/', hello)
+dp.router.add_get('/', hello)
 
 # Web serverni ishga tushirish
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 10000))
     logging.info(f"Bot ishga tushdi: {port} portda")
-    web.run_app(app, port=port)
+    web.run_app(dp, port=port)
