@@ -25,4 +25,3 @@ if __name__ == '__main__':
     app = web.Application()
     dp.setup_acls(app, bot)
     web.run_app(app, port=PORT)
- 
